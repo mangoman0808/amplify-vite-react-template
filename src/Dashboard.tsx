@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { Schema } from '../amplify/data/resource';
 import { generateClient } from 'aws-amplify/data';
-import TasksPage from './TasksPage';
+//import TasksPage from './TasksPage';
 
 const client = generateClient<Schema>();
 
@@ -30,7 +30,12 @@ const Header = ({ title }: { title: string }) => (<div className="bg-white shado
 const StatCard = ({ title, value, icon, color }: { title: string, value: string | number, icon: React.ElementType, color: string }) => { const Icon = icon; return (<div className="bg-white p-5 rounded-xl shadow-md flex items-center space-x-4"><div className={`p-3 rounded-full bg-${color}-100 text-${color}-600`}><Icon className="w-7 h-7" /></div><div><p className="text-gray-500 text-sm font-medium">{title}</p><p className="text-3xl font-bold text-gray-800">{value}</p></div></div>); };
 const DashboardContent = ({ members, events, donations }: { members: Schema['Member']['type'][], events: Schema['Event']['type'][], donations: Schema['Donation']['type'][] }) => (<div className="p-6 space-y-6"><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><StatCard title="Total Members" value={members.length} icon={UsersIcon} color="indigo" /><StatCard title="Upcoming Events" value={events.length} icon={CalendarIcon} color="green" /><StatCard title="Weekly Donations" value={`$${donations.reduce((sum, d) => sum + d.amount, 0).toFixed(2)}`} icon={DollarSignIcon} color="yellow" /></div></div>);
 
-export default function DashboardPage({ signOut, user }) {
+export default function DashboardPage({ 
+    signOut, user 
+}: {
+    signOut: () => void | Promise<void>;
+    user: any; // Replace 'any' with a more specific type if available
+}) {
   const [activePage, setActivePage] = useState('Dashboard');
   const [isLoading, setIsLoading] = useState(true);
   const [members, setMembers] = useState<Schema['Member']['type'][]>([]);
@@ -68,7 +73,7 @@ export default function DashboardPage({ signOut, user }) {
     }
     switch (activePage) {
         case 'Dashboard': return <DashboardContent members={members} events={events} donations={donations} />;
-        case 'Tasks': return <TasksPage />;
+        //case 'Tasks': return <TasksPage />;
         // Add cases for other pages here
         default: return <div className="p-6">{activePage} page coming soon.</div>;
     }
